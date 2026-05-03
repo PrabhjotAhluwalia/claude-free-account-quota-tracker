@@ -1,0 +1,19 @@
+{
+  "name": "claude-free-account-quota-tracker",
+  "version": "1.0.0",
+  "description": "Manifest V3 extension that tracks Claude.ai account quota reset banners locally.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test/run-sandbox-tests.mjs",
+    "check": "node --check content.js && node --check popup.js && node --check background.js"
+  },
+  "keywords": [
+    "chrome-extension",
+    "brave-extension",
+    "manifest-v3",
+    "claude",
+    "quota-tracker"
+  ],
+  "license": "UNLICENSED"
+}

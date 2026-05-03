@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Claude Free Account Quota Tracker",
+  "version": "1.0.0",
+  "description": "Tracks Claude.ai free-account quota reset times across multiple logged-in accounts.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://claude.ai/*",
+    "*://*.claude.ai/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://claude.ai/*",
+        "*://*.claude.ai/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Claude Quota Tracker",
+    "default_popup": "popup.html"
+  }
+}

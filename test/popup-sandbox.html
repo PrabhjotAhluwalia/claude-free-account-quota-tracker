@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Claude Quota Tracker Popup Sandbox</title>
+    <link rel="stylesheet" href="../popup.css">
+    <script>
+      const now = Date.now();
+      window.__mockStorage = {
+        claudeActiveAccountId: "blocked@example.com",
+        claudeAccounts: {
+          "available@example.com": {
+            id: "available@example.com",
+            email: "available@example.com",
+            label: "available@example.com",
+            firstSeenAt: now - 3600000,
+            lastSeenAt: now - 300000
+          },
+          "blocked@example.com": {
+            id: "blocked@example.com",
+            email: "blocked@example.com",
+            label: "blocked@example.com",
+            firstSeenAt: now - 7200000,
+            lastSeenAt: now - 60000,
+            quotaResetAt: now + 5400000
+          }
+        }
+      };
+
+      window.chrome = {
+        storage: {
+          local: {
+            async get(keys) {
+              return Object.fromEntries(keys.map((key) => [key, window.__mockStorage[key]]));
+            }
+          },
+          onChanged: {
+            addListener() {}
+          }
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div>
+          <h1>Claude Accounts</h1>
+          <p id="summary">Loading accounts...</p>
+        </div>
+        <button id="refreshButton" class="icon-button" type="button" title="Refresh accounts" aria-label="Refresh accounts">
+          &#8635;
+        </button>
+      </header>
+
+      <section id="accountList" class="account-list" aria-live="polite"></section>
+
+      <template id="accountTemplate">
+        <article class="account-card">
+          <div class="account-main">
+            <div class="account-label"></div>
+            <div class="account-meta"></div>
+          </div>
+          <div class="account-status"></div>
+        </article>
+      </template>
+    </main>
+
+    <script src="../popup.js"></script>
+  </body>
+</html>

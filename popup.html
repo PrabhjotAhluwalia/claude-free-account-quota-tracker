@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Claude Quota Tracker</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div>
+          <h1>Claude Accounts</h1>
+          <p id="summary">Loading accounts...</p>
+        </div>
+        <button id="refreshButton" class="icon-button" type="button" title="Refresh accounts" aria-label="Refresh accounts">
+          &#8635;
+        </button>
+      </header>
+
+      <section id="accountList" class="account-list" aria-live="polite"></section>
+
+      <template id="accountTemplate">
+        <article class="account-card">
+          <div class="account-main">
+            <div class="account-label"></div>
+            <div class="account-meta"></div>
+          </div>
+          <div class="account-status"></div>
+        </article>
+      </template>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

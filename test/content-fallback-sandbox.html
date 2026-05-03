@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Claude Quota Tracker Hidden Email Fallback Sandbox</title>
+    <script>
+      const activeEmail = "hidden.active@example.com";
+      window.__mockStorage = {
+        claudeActiveAccountId: activeEmail,
+        claudeAccounts: {
+          [activeEmail]: {
+            id: activeEmail,
+            email: activeEmail,
+            label: activeEmail,
+            firstSeenAt: Date.now() - 120000,
+            lastSeenAt: Date.now() - 60000
+          }
+        }
+      };
+      window.chrome = {
+        storage: {
+          local: {
+            async get(keys) {
+              if (Array.isArray(keys)) {
+                return Object.fromEntries(keys.map((key) => [key, window.__mockStorage[key]]));
+              }
+
+              if (typeof keys === "string") {
+                return { [keys]: window.__mockStorage[keys] };
+              }
+
+              return { ...window.__mockStorage };
+            },
+            async set(values) {
+              Object.assign(window.__mockStorage, values);
+            }
+          }
+        },
+        runtime: {
+          sendMessage(message) {
+            window.__messages.push(message);
+            return Promise.resolve({ ok: true });
+          }
+        }
+      };
+      window.__messages = [];
+    </script>
+  </head>
+  <body>
+    <main data-testid="chat">
+      <button data-testid="profile-menu" aria-label="Prab, Settings">P</button>
+      <textarea aria-label="Write a message"></textarea>
+      <div role="alert">You hit your message limit. It resets at 11:40 PM.</div>
+    </main>
+    <pre id="result"></pre>
+    <script src="../content.js"></script>
+    <script>
+      setTimeout(() => {
+        document.getElementById("result").textContent = JSON.stringify({
+          storage: window.__mockStorage,
+          messages: window.__messages
+        }, null, 2);
+      }, 1200);
+    </script>
+  </body>
+</html>
